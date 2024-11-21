@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        .series-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .series-card {
+            background-color: #fff;
+            margin: 10px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+            background-image:url('pop.jpg')
+        }
+        .series-card:hover {
+            background-color: #f0f0f0;
+        }
+        .episode-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .episode-button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .episode-button:hover {
+            background-color: #007B8C;
+            transform: scale(1.2);  /* Enlarges the button */
+        }
+        .video-preview {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Makes sure the preview stays behind the button */
+            border-radius: 5px;
+        }
+        .video-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        video {
+            width: 80%;
+            max-width: 800px;
+        }
+        .back-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #e02d2d;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Anime Series</h1>
+</header>
+
+<div class="series-list">
+    <!-- Anime Series 1 - Flow in the Island -->
+    <div class="series-card" onclick="showEpisodes('anime1')">
+        <h3>Flow in the Island</h3>
+    </div>
+
+</div>
+
+<!-- Episode Section (Hidden Initially) -->
+<div id="episode-section" class="episode-list" style="display: none;">
+    <h2 id="anime-title"></h2>
+    <button class="episode-button" onmouseenter="showPreview('episode1')" onmouseleave="hidePreview('episode1')" onclick="playEpisode('episode1')">Episode 1</button>
+    <button class="episode-button" onmouseenter="showPreview('episode2')" onmouseleave="hidePreview('episode2')" onclick="playEpisode('episode2')">Episode 2</button>
+    <button class="episode-button" onmouseenter="showPreview('episode3')" onmouseleave="hidePreview('episode3')" onclick="playEpisode('episode3')">Episode 3</button>
+    <button class="back-button" onclick="backToSeries()">Back to Series</button>
+</div>
+
+<!-- Video Container (Hidden Initially) -->
+<div id="video-container" class="video-container">
+    <video id="video-player" controls>
+        <source id="video-source" src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <button class="back-button" onclick="backToEpisodes()">Back to Episodes</button>
+</div>
+
+<!-- Video Preview Elements (Behind the Button) -->
+<div id="preview-episode1" class="video-preview">
+    <video muted loop>
+        <source src="file:///C:/Users/boulehmi/Pictures/ControlCenter3/Scan/flow.mp4" type="video/mp4">
+    </video>
+</div>
+<div id="preview-episode2" class="video-preview">
+    <video muted loop>
+        <source src="file:///C:/path/to/your/video/episode2.mp4" type="video/mp4">
+    </video>
+</div>
+<div id="preview-episode3" class="video-preview">
+    <video muted loop>
+        <source src="file:///C:/path/to/your/video/episode3.mp4" type="video/mp4">
+    </video>
+</div>
+
+<script>
+    // This function shows the episode section when a series is clicked
+    function showEpisodes(anime) {
+        // Titles for each anime series
+        const animeTitle = {
+            'anime1': 'Flow in the Island',
+            'anime2': 'Anime 2',
+            'anime3': 'Anime 3'
+        };
+
+        // Update the anime title in the episode section
+        document.getElementById('anime-title').innerText = animeTitle[anime];
+        
+        // Show episode section and hide series list
+        document.getElementById('episode-section').style.display = 'block';  // Show episode section
+        document.querySelector('.series-list').style.display = 'none';  // Hide series list
+    }
+
+    // Show the preview behind the button when the mouse enters the episode button
+    function showPreview(episode) {
+        const preview = document.getElementById('preview-' + episode);
+        preview.style.display = 'block'; // Show the video preview
+    }
+
+    // Hide the preview when the mouse leaves the episode button
+    function hidePreview(episode) {
+        const preview = document.getElementById('preview-' + episode);
+        preview.style.display = 'none'; // Hide the video preview
+    }
+
+    // This function plays the selected episode
+    function playEpisode(episode) {
+        const episodePaths = {
+            'episode1': 'file:///C:/Users/boulehmi/Pictures/ControlCenter3/Scan/flow.mp4', // Your video path
+            'episode2': 'file:///C:/path/to/your/video/episode2.mp4', // Replace with actual path to your local video
+            'episode3': 'file:///C:/path/to/your/video/episode3.mp4'  // Replace with actual path to your local video
+        };
+
+        // Show the video player container and hide the episode list
+        document.getElementById('video-container').style.display = 'block';
+        document.getElementById('episode-section').style.display = 'none';
+
+        // Set the video source to the selected episode
+        const videoSource = document.getElementById('video-source');
+        videoSource.src = episodePaths[episode];
+
+        // Reload the video player to play the new episode
+        const videoPlayer = document.getElementById('video-player');
+        videoPlayer.load();
+        videoPlayer.play();
+    }
+
+    // This function goes back to the episode list
+    function backToEpisodes() {
+        // Hide the video player and show the episode list again
+        document.getElementById('video-container').style.display = 'none';
+        document.getElementById('episode-section').style.display = 'block';
+    }
+
+    // This function goes back to the series list
+    function backToSeries() {
+        // Hide the episode section and show the series list again
+        document.getElementById('episode-section').style.display = 'none';
+        document.querySelector('.series-list').style.display = 'flex';
+    }
+</script>
+
+</body>
+</html>
